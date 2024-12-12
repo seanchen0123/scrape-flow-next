@@ -1,5 +1,5 @@
 import BreadcrumbHeader from '@/components/BreadcrumbHeader'
-import DesktopSidebar from '@/components/DesktopSidebar'
+import DesktopSidebar from '@/components/Sidebar'
 import { ThemeModeToggle } from '@/components/ThemeModeToggle'
 import { Separator } from '@/components/ui/separator'
 import React, { ReactNode } from 'react'
