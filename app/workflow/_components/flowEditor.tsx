@@ -3,9 +3,19 @@
 import { createFlowNode } from '@/lib/workflow/createFlowNode'
 import { TaskType } from '@/types/task'
 import { Workflow } from '@prisma/client'
-import { Background, BackgroundVariant, Controls, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react'
+import {
+  Background,
+  BackgroundVariant,
+  Controls,
+  ReactFlow,
+  useEdgesState,
+  useNodesState,
+  useReactFlow
+} from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import NodeComponent from './nodes/nodeComponent'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   workflow: Workflow
@@ -21,8 +31,30 @@ const fitViewOptions = {
 }
 
 const FlowEditor = ({ workflow }: Props) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState([createFlowNode(TaskType.LAUNCH_BROWSER)])
+  const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [fitView, setFitView] = useState(false)
+  const { setViewport } = useReactFlow()
+
+  useEffect(() => {
+    try {
+      const flow = JSON.parse(workflow.definition)
+      if (!flow) return
+      setNodes(flow.nodes || [])
+      setEdges(flow.edges || [])
+      if (!flow.viewport) {
+        setFitView(true)
+        return
+      }
+      setFitView(false)
+      const { x = 0, y = 0, zoom = 1 } = flow.viewport
+      setViewport({ x, y, zoom })
+    } catch (error) {
+      console.error(error)
+      toast.error('Error parsing workflow definition')
+    }
+  }, [workflow.definition, setEdges, setNodes, setViewport])
+
   return (
     <main className="w-full h-full">
       <ReactFlow
@@ -33,7 +65,7 @@ const FlowEditor = ({ workflow }: Props) => {
         nodeTypes={nodeTypes}
         snapGrid={snapGrid}
         snapToGrid
-        fitView
+        fitView={fitView}
         fitViewOptions={fitViewOptions}
       >
         <Controls position="top-left" fitViewOptions={fitViewOptions} />

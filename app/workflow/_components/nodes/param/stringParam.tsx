@@ -4,17 +4,27 @@ import { ParamProps } from '@/types/appNode'
 import { TaskParam } from '@/types/task'
 import React, { useId } from 'react'
 
-const StringParam = ({param, value, updateNodeParamValue}: ParamProps) => {
+const StringParam = ({ param, value, updateNodeParamValue }: ParamProps) => {
   const id = useId()
+  const [internalValue, setInternalValue] = React.useState(value)
 
   return (
-    <div className='space-y-1 p-1 w-full'>
-      <Label htmlFor={id} className='text-xs flex' >
+    <div className="space-y-1 p-1 w-full">
+      <Label htmlFor={id} className="text-xs flex">
         {param.name}
-        {param.required&& <p className='text-red-400 px-2'>*</p>}
+        {param.required && <p className="text-red-400 px-2">*</p>}
       </Label>
-      <Input id={id} value={value} placeholder='Enter value here' onChange={(e) => updateNodeParamValue(e.target.value)} />
-      {param.helperText && <p className='text-muted-foreground px-2'>{param.helperText}</p>}
+      <Input
+        className='text-xs'
+        id={id}
+        value={internalValue}
+        placeholder="Enter value here"
+        onChange={(e) => setInternalValue(e.target.value)}
+        onBlur={() => updateNodeParamValue(internalValue)}
+      />
+      {param.helperText && (
+        <p className="text-muted-foreground px-2">{param.helperText}</p>
+      )}
     </div>
   )
 }
