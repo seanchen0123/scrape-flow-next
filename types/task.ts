@@ -6,7 +6,7 @@ export enum TaskParamType {
   STRING = 'STRING'
 }
 
-export interface TaskParam {
+export type TaskParam = {
   name: string
   type: TaskParamType
   helperText?: string

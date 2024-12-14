@@ -3,14 +3,14 @@
 import { cn } from '@/lib/utils'
 import { useReactFlow } from '@xyflow/react'
 import React, { ReactNode } from 'react'
+import { useNodeComponentContext } from '../../context/NodeComponentProvider'
 
 type Props = {
-  nodeId: string
-  isSelected: boolean
   children: ReactNode
 }
 
-const NodeCard = ({ nodeId, isSelected, children }: Props) => {
+const NodeCard = ({ children }: Props) => {
+  const {nodeId, isSelected} = useNodeComponentContext()
   const { getNode, setCenter } = useReactFlow()
 
   const onDoubleClick = () => {

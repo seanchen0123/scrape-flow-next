@@ -1,13 +1,10 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ParamProps } from '@/types/appNode'
 import { TaskParam } from '@/types/task'
 import React, { useId } from 'react'
 
-type Props = {
-  param: TaskParam
-}
-
-const StringParam = ({param}: Props) => {
+const StringParam = ({param, value, updateNodeParamValue}: ParamProps) => {
   const id = useId()
 
   return (
@@ -16,7 +13,8 @@ const StringParam = ({param}: Props) => {
         {param.name}
         {param.required&& <p className='text-red-400 px-2'>*</p>}
       </Label>
-      <Input id={id} />
+      <Input id={id} value={value} placeholder='Enter value here' onChange={(e) => updateNodeParamValue(e.target.value)} />
+      {param.helperText && <p className='text-muted-foreground px-2'>{param.helperText}</p>}
     </div>
   )
 }
