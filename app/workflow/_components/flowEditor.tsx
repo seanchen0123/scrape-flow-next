@@ -4,9 +4,12 @@ import { createFlowNode } from '@/lib/workflow/createFlowNode'
 import { TaskType } from '@/types/task'
 import { Workflow } from '@prisma/client'
 import {
+  addEdge,
   Background,
   BackgroundVariant,
+  Connection,
   Controls,
+  Edge,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -17,6 +20,7 @@ import NodeComponent from './nodes/nodeComponent'
 import React, { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { AppNode } from '@/types/appNode'
+import DeletableEdge from './edges/deleteEdge'
 
 type Props = {
   workflow: Workflow
@@ -26,6 +30,10 @@ const nodeTypes = {
   FlowScrapeNode: NodeComponent
 }
 
+const edgeTypes = {
+  default: DeletableEdge
+}
+
 const snapGrid: [number, number] = [50, 50]
 const fitViewOptions = {
   padding: 3
@@ -33,7 +41,7 @@ const fitViewOptions = {
 
 const FlowEditor = ({ workflow }: Props) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<AppNode>([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([])
   const [fitView, setFitView] = useState(false)
   const { setViewport, screenToFlowPosition } = useReactFlow()
 
@@ -75,6 +83,10 @@ const FlowEditor = ({ workflow }: Props) => {
     setNodes((nds) => nds.concat(newNode))
   }, [])
 
+  const onConnect = useCallback((connection: Connection) => {
+    setEdges(eds => addEdge({...connection, animated: true }, eds))
+  }, [])
+
   return (
     <main className="w-full h-full">
       <ReactFlow
@@ -83,12 +95,14 @@ const FlowEditor = ({ workflow }: Props) => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         snapGrid={snapGrid}
         snapToGrid
         fitView={fitView}
         fitViewOptions={fitViewOptions}
         onDragOver={onDragOver}
         onDrop={onDrop}
+        onConnect={onConnect}
       >
         <Controls position="top-left" fitViewOptions={fitViewOptions} />
         <Background variant={BackgroundVariant.Dots} gap={12} />
