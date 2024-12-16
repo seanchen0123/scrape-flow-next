@@ -12,9 +12,10 @@ type Props = {
   title: string
   subTitle?: string
   workflowId: string
+  hideButtons?: boolean
 }
 
-const TopBar = ({title, subTitle, workflowId}: Props) => {
+const TopBar = ({ title, subTitle, workflowId, hideButtons = false }: Props) => {
   const router = useRouter()
 
   return (
@@ -30,9 +31,13 @@ const TopBar = ({title, subTitle, workflowId}: Props) => {
           {subTitle && <p className="text-xs text-muted-foreground truncate text-ellipsis">{subTitle}</p>}
         </div>
       </div>
-      <div className='flex flex-1 gap-1 justify-end'>
-        <ExecuteBtn workflowId={workflowId} />
-        <SaveBtn workflowId={workflowId} />
+      <div className="flex flex-1 gap-1 justify-end">
+        {!hideButtons && (
+          <>
+            <ExecuteBtn workflowId={workflowId} />
+            <SaveBtn workflowId={workflowId} />
+          </>
+        )}
       </div>
     </header>
   )
