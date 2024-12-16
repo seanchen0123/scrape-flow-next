@@ -4,19 +4,23 @@ import { cn } from '@/lib/utils'
 import { useReactFlow } from '@xyflow/react'
 import React, { ReactNode } from 'react'
 import { useNodeComponentContext } from '../../context/NodeComponentProvider'
+import { useFlowValidationContext } from '@/hooks/use-flow-validation-context'
 
 type Props = {
   children: ReactNode
 }
 
 const NodeCard = ({ children }: Props) => {
-  const {nodeId, isSelected} = useNodeComponentContext()
+  const { nodeId, isSelected } = useNodeComponentContext()
+  const { invalidInputs } = useFlowValidationContext()
   const { getNode, setCenter } = useReactFlow()
+
+  const hasInvalidInputs = invalidInputs.some(node => node.nodeId === nodeId)
 
   const onDoubleClick = () => {
     // make node position center
     const node = getNode(nodeId)
-    if (!node) return 
+    if (!node) return
     const { position, measured } = node
     if (!position || !measured) return
     const { width, height } = measured
@@ -31,7 +35,14 @@ const NodeCard = ({ children }: Props) => {
   }
 
   return (
-    <div onDoubleClick={onDoubleClick} className={cn('rounded-md cursor-pointer bg-background border-2 border-separate w-[420px] text-xs gap-1 flex flex-col', isSelected && 'border-primary')}>
+    <div
+      onDoubleClick={onDoubleClick}
+      className={cn(
+        'rounded-md cursor-pointer bg-background border-2 border-separate w-[420px] text-xs gap-1 flex flex-col',
+        isSelected && 'border-primary',
+        hasInvalidInputs && 'border-destructive border-2'
+      )}
+    >
       {children}
     </div>
   )
