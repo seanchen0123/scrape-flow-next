@@ -6,7 +6,7 @@ import { AppNode } from '@/types/appNode'
 import { useCallback } from 'react'
 import { useNodeComponentContext } from '../../context/NodeComponentProvider'
 
-const NodeParamField = ({ param }: { param: TaskParam }) => {
+const NodeParamField = ({ param, disabled }: { param: TaskParam, disabled: boolean}) => {
   const { nodeId } = useNodeComponentContext()
   const { updateNodeData, getNode } = useReactFlow()
   const node = getNode(nodeId) as AppNode
@@ -26,7 +26,7 @@ const NodeParamField = ({ param }: { param: TaskParam }) => {
 
   switch (param.type) {
     case TaskParamType.STRING:
-      return <StringParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} />
+      return <StringParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
     default:
       return (
         <div className="w-full">
