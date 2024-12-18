@@ -22,5 +22,5 @@ export const LaunchBrowserTask = {
       name: 'Web page',
       type: TaskParamType.BROSWER_INSTANCE
     }
-  ]
+  ] as const
 } satisfies WorkflowTask

@@ -101,7 +101,7 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
         </div>
       </aside>
       <div className="flex w-full h-full overflow-auto">
-         
+         <pre>{JSON.stringify(query.data?.phases.find(p => p.id === selectedPhase), null, 4)}</pre>
       </div>
     </div>
   )
