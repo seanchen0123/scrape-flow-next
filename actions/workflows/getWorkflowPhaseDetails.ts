@@ -16,6 +16,13 @@ export async function getWorkflowPhaseDetails(phaseId: string) {
       execution: {
         userId
       }
+    },
+    include: {
+      logs: {
+        orderBy: {
+          timestamp: 'asc'
+        }
+      }
     }
   })
 }

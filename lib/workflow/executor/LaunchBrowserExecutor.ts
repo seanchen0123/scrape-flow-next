@@ -1,5 +1,4 @@
-import { waitFor } from '@/lib/helper/waitFor'
-import { Environment, ExecutionEnvironment } from '@/types/executor'
+import { ExecutionEnvironment } from '@/types/executor'
 import pupppeteer from 'puppeteer'
 import { LaunchBrowserTask } from '../task/LaunchBrowser'
 
@@ -13,11 +12,10 @@ export async function LaunchBrowserExecutor(environment: ExecutionEnvironment<ty
     const page = await browser.newPage()
     await page.goto(websiteUrl)
     await page.setViewport({width: 1080, height: 1024})
-    await waitFor(3000)
     environment.setPage(page)
     return true
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    environment.log.error(error.message)
     return false
   }
 }
