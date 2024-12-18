@@ -101,7 +101,39 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
         </div>
       </aside>
       <div className="flex w-full h-full overflow-auto">
-         <pre>{JSON.stringify(phaseDetails, null, 4)}</pre>
+        {isRunning && (
+          <div className="flex items-center flex-col gap-2 justify-center h-full w-full">
+            <p className="font-bold">Run is in progress, please wait</p>
+          </div>
+        )}
+        {!isRunning && !selectedPhase && (
+          <div className="flex items-center flex-col gap-2 justify-center h-full w-full">
+            <div className="flex flex-col gap-1 text-center">
+              <p className="font-bold">No phase selected</p>
+              <p className="text-muted-foreground text-sm">Select a phase to view details</p>
+            </div>
+          </div>
+        )}
+        {!isRunning && selectedPhase && phaseDetails.data && (
+          <div className="flex flex-col p-4 container gap-4 overflow-auto">
+            <div className="flex gap-2 items-center">
+              <Badge variant={'outline'} className="space-x-4">
+                <div className="flex gap-1 items-center">
+                  <CoinsIcon size={18} className="stroke-muted-foreground" />
+                  <span>Credits</span>
+                </div>
+                <span>TODO</span>
+              </Badge>
+              <Badge variant={'outline'} className="space-x-4">
+                <div className="flex gap-1 items-center">
+                  <ClockIcon size={18} className="stroke-muted-foreground" />
+                  <span>Duration</span>
+                </div>
+                <span>{datesToDurationString(phaseDetails.data.startedAt, phaseDetails.data.completedAt) || '-'}</span>
+              </Badge>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
