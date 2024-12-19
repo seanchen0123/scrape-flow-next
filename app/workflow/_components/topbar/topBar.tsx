@@ -9,7 +9,7 @@ import SaveBtn from './saveBtn'
 import ExecuteBtn from './executeBtn'
 import NavigationTabs from './navigationTabs'
 import PublishBtn from './publishBtn'
-import UnpublishBtn from './unPublishBtn'
+import UnpublishBtn from './unpublishBtn'
 
 type Props = {
   title: string
