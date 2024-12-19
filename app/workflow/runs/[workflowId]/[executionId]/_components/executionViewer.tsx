@@ -52,13 +52,12 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
     // while running we auto-select the current running phase in the sidebar
     const phases = query.data?.phases || []
     if (isRunning) {
-
-      const phaseToSelect = phases.toSorted((a, b) => a.startedAt! > b.startedAt! ? -1 : 1)[0]
+      const phaseToSelect = phases.toSorted((a, b) => (a.startedAt! > b.startedAt! ? -1 : 1))[0]
 
       setSelectedPhase(phaseToSelect.id)
       return
     }
-    const phaseToSelect = phases.toSorted((a, b) => a.completedAt! > b.completedAt! ? -1 : 1)[0]
+    const phaseToSelect = phases.toSorted((a, b) => (a.completedAt! > b.completedAt! ? -1 : 1))[0]
 
     setSelectedPhase(phaseToSelect.id)
   }, [query.data?.phases, isRunning, setSelectedPhase])
@@ -72,7 +71,16 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
       <aside className="w-[440px] max-w-[440px] border-r-2 border-separate flex flex-grow flex-col overflow-hidden">
         <div className="py-4 px-2">
           {/* status label */}
-          <ExecutionLabel label="Status" icon={CircleDashedIcon} value={query.data?.status} />
+          <ExecutionLabel
+            label="Status"
+            icon={CircleDashedIcon}
+            value={
+              <div className="font-semibold capitalize flex gap-2 items-center">
+                <PhaseStatusBadge status={query.data?.status as ExecutionPhaseStatus} />
+                <span>{query.data?.status}</span>
+              </div>
+            }
+          />
           {/* started at label */}
           <ExecutionLabel
             label="Started at"
@@ -92,7 +100,11 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
             value={duration ? duration : <Loader2Icon className="animate-spin" size={20} />}
           />
           {/* credits consumed label */}
-          <ExecutionLabel label="Credits consumed" icon={CoinsIcon} value={<ReactCountupWrapper value={creditsConsumed} />} />
+          <ExecutionLabel
+            label="Credits consumed"
+            icon={CoinsIcon}
+            value={<ReactCountupWrapper value={creditsConsumed} />}
+          />
         </div>
         <Separator />
         <div className="flex justify-center items-center py-2 px-4">

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import SaveBtn from './saveBtn'
 import ExecuteBtn from './executeBtn'
+import NavigationTabs from './navigationTabs'
 
 type Props = {
   title: string
@@ -31,6 +32,7 @@ const TopBar = ({ title, subTitle, workflowId, hideButtons = false }: Props) => 
           {subTitle && <p className="text-xs text-muted-foreground truncate text-ellipsis">{subTitle}</p>}
         </div>
       </div>
+      <NavigationTabs workflowId={workflowId} />
       <div className="flex flex-1 gap-1 justify-end">
         {!hideButtons && (
           <>
