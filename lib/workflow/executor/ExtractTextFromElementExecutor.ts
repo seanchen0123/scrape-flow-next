@@ -30,6 +30,7 @@ export async function ExtractTextFromElementExecutor(environment: ExecutionEnvir
     }
 
     environment.setOutput('Extracted text', extractedText)
+    environment.log.info('Extracted text: ' + extractedText)
 
     return true
   } catch (error: any) {

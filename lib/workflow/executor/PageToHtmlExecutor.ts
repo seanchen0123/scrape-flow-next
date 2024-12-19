@@ -5,6 +5,7 @@ export async function PageToHtmlExecutor(environment: ExecutionEnvironment<typeo
   try {
     const html = await environment.getPage()!.content()
     environment.setOutput('Html', html)
+    environment.log.info('Html catched successfully')
     return true
   } catch (error: any) {
     environment.log.error(error.message)
