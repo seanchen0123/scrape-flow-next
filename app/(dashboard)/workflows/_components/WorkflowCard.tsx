@@ -66,7 +66,12 @@ const WorkflowCard = ({ workflow }: Props) => {
                 </span>
               )}
             </h3>
-            <ScheduleSection workflowId={workflow.id} isDraft={isDraft} creditsCost={workflow.creditsCost} cron={workflow.cron} />
+            <ScheduleSection
+              workflowId={workflow.id}
+              isDraft={isDraft}
+              creditsCost={workflow.creditsCost}
+              cron={workflow.cron}
+            />
           </div>
         </div>
         <div className="flex items-center space-x-2">
@@ -140,7 +145,7 @@ function ScheduleSection({
   return (
     <div className="flex items-center gap-2">
       <CornerDownRightIcon className="w-4 h4 text-muted-foreground" />
-      <SchedulerDialog workflowId={workflowId} cronStr={cron} />
+      <SchedulerDialog workflowId={workflowId} cronStr={cron} key={`${cron}-${workflowId}`} />
       <MoveRightIcon className="w-4 h4 text-muted-foreground" />
       <TooltipWrapper content="Credit consumption for full run">
         <div className="flex items-center gap-3">

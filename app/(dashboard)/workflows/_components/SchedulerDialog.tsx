@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import cronstrue from 'cronstrue'
 import parser from 'cron-parser'
+import { removeWorkflowSchedule } from '@/actions/workflows/removeWorkflowSchedule'
+import { Separator } from '@/components/ui/separator'
 
 const SchedulerDialog = ({ workflowId, cronStr }: { workflowId: string; cronStr: string | null }) => {
   const [cron, setCron] = useState(cronStr || '')
@@ -22,6 +24,16 @@ const SchedulerDialog = ({ workflowId, cronStr }: { workflowId: string; cronStr:
     mutationFn: updateWorkflowCron,
     onSuccess: () => {
       toast.success('Schedule updated successfully', { id: 'cron' })
+    },
+    onError: () => {
+      toast.error('Something went wrong', { id: 'cron' })
+    }
+  })
+
+  const removeScheduleMutaion = useMutation({
+    mutationFn: removeWorkflowSchedule,
+    onSuccess: () => {
+      toast.success('Schedule removed successfully', { id: 'cron' })
     },
     onError: () => {
       toast.error('Something went wrong', { id: 'cron' })
@@ -78,6 +90,24 @@ const SchedulerDialog = ({ workflowId, cronStr }: { workflowId: string; cronStr:
           >
             {validCron ? readableCron : 'Not a valid cron expression'}
           </div>
+          {workflowHasValidCron && (
+            <DialogClose asChild>
+              <div>
+                <Button
+                  className="w-full text-destructive border-destructive hover:text-destructive"
+                  variant={'outline'}
+                  disabled={mutaion.isPending || removeScheduleMutaion.isPending}
+                  onClick={() => {
+                    toast.loading('Removing schedule...', { id: 'cron' })
+                    removeScheduleMutaion.mutate(workflowId)
+                  }}
+                >
+                  Remove current schedule
+                </Button>
+                <Separator className="my-4" />
+              </div>
+            </DialogClose>
+          )}
         </div>
         <DialogFooter className="px-6 gap-2">
           <DialogClose asChild>
