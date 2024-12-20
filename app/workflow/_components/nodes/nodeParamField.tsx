@@ -25,6 +25,8 @@ const NodeParamField = ({ param, disabled }: { param: TaskParam, disabled: boole
   )
 
   switch (param.type) {
+    case TaskParamType.BROSWER_INSTANCE:
+      return <p className="text-xs">{param.name}</p>
     case TaskParamType.STRING:
       return <StringParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
     default:
