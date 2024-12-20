@@ -28,6 +28,7 @@ const TaskMenu = ({}: Props) => {
         <AccordionItem value="timing">
           <AccordionTrigger className="font-bold">Timing controls</AccordionTrigger>
           <AccordionContent className="flex flex-col gap-1">
+            <TaskMenuBtn taskType={TaskType.DELAY} />
             <TaskMenuBtn taskType={TaskType.WAIT_FOR_ELEMENT} />
           </AccordionContent>
         </AccordionItem>

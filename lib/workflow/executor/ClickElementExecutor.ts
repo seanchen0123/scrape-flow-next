@@ -1,5 +1,4 @@
 import { ExecutionEnvironment } from '@/types/executor'
-import { waitFor } from '@/lib/helper/waitFor'
 import { ClickElementTask } from '../task/ClickElement'
 
 export async function ClickElementExecutor(environment: ExecutionEnvironment<typeof ClickElementTask>): Promise<boolean> {

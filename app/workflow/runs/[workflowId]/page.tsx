@@ -2,7 +2,6 @@ import { getWorkflowExecutions } from '@/actions/workflows/getWorkflowExecutions
 import TopBar from '../../_components/topbar/topBar'
 import { Suspense } from 'react'
 import { InboxIcon, Loader2Icon } from 'lucide-react'
-import { waitFor } from '@/lib/helper/waitFor'
 import ExecutionsTable from './_components/executionsTable'
 
 const ExecutionsPage = ({ params: { workflowId } }: { params: { workflowId: string } }) => {

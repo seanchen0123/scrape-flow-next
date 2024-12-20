@@ -1,5 +1,4 @@
 import { ExecutionEnvironment } from '@/types/executor'
-import { waitFor } from '@/lib/helper/waitFor'
 import { WaitForElementTask } from '../task/WaitForElement'
 
 export async function WaitForElementExecutor(
@@ -23,7 +22,6 @@ export async function WaitForElementExecutor(
 
     environment.log.info(`Element ${selector} became: ${visibility}`)
 
-    await waitFor(1500)
     return true
   } catch (error: any) {
     environment.log.error(error.message)
