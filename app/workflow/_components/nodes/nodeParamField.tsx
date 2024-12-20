@@ -5,8 +5,10 @@ import { useReactFlow } from '@xyflow/react'
 import { AppNode } from '@/types/appNode'
 import { useCallback } from 'react'
 import { useNodeComponentContext } from '../../context/NodeComponentProvider'
+import BrowserInstanceParam from './param/browserInstanceParam'
+import SelectParam from './param/selectParam'
 
-const NodeParamField = ({ param, disabled }: { param: TaskParam, disabled: boolean}) => {
+const NodeParamField = ({ param, disabled }: { param: TaskParam; disabled: boolean }) => {
   const { nodeId } = useNodeComponentContext()
   const { updateNodeData, getNode } = useReactFlow()
   const node = getNode(nodeId) as AppNode
@@ -26,9 +28,11 @@ const NodeParamField = ({ param, disabled }: { param: TaskParam, disabled: boole
 
   switch (param.type) {
     case TaskParamType.BROSWER_INSTANCE:
-      return <p className="text-xs">{param.name}</p>
+      return <BrowserInstanceParam param={param} value={''} updateNodeParamValue={updateNodeParamValue} />
     case TaskParamType.STRING:
       return <StringParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
+    case TaskParamType.SELECT:
+      return <SelectParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
     default:
       return (
         <div className="w-full">

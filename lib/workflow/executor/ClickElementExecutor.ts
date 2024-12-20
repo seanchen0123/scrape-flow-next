@@ -12,7 +12,7 @@ export async function ClickElementExecutor(environment: ExecutionEnvironment<typ
     await environment.getPage()!.click(selector)
 
     environment.log.info('Click element successfully')
-    await waitFor(1500)
+
     return true
   } catch (error: any) {
     environment.log.error(error.message)

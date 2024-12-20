@@ -1,8 +1,9 @@
+'use client'
+
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ParamProps } from '@/types/appNode'
-import { TaskParam } from '@/types/task'
 import React, { useEffect, useId } from 'react'
 
 const StringParam = ({ param, value, updateNodeParamValue, disabled }: ParamProps) => {
