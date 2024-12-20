@@ -10,7 +10,7 @@ type Props = {}
 const TaskMenu = ({}: Props) => {
   return (
     <aside className="w-[340px] min-w-[340px] border-r-2 border-separate h-full p-2 px-4 overflow-auto">
-      <Accordion type="multiple" className="w-full" defaultValue={['interactions', 'extraction', 'timing']}>
+      <Accordion type="multiple" className="w-full" defaultValue={['interactions', 'extraction', 'timing', 'results']}>
         <AccordionItem value="interactions">
           <AccordionTrigger className="font-bold">User interactions</AccordionTrigger>
           <AccordionContent className="flex flex-col gap-1">
@@ -30,6 +30,12 @@ const TaskMenu = ({}: Props) => {
           <AccordionContent className="flex flex-col gap-1">
             <TaskMenuBtn taskType={TaskType.DELAY} />
             <TaskMenuBtn taskType={TaskType.WAIT_FOR_ELEMENT} />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="results">
+          <AccordionTrigger className="font-bold">Result delivery</AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-1">
+            <TaskMenuBtn taskType={TaskType.DELIVERY_VIA_WEBHOOK} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

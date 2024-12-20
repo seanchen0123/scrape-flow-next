@@ -8,6 +8,7 @@ import { FillInputExecutor } from './FillInputExecutor'
 import { ClickElementExecutor } from './ClickElementExecutor'
 import { WaitForElementExecutor } from './WaitForElementExecutor'
 import { DelayExecutor } from './DelayExecutor'
+import { DeliveryViaWebhookExecutor } from './DeliveryViaWebhookExecutor'
 
 type ExecutorFn<T extends WorkflowTask> = (environment: ExecutionEnvironment<T>) => Promise<boolean>
 
@@ -22,5 +23,6 @@ export const executorRegistry: RegistryType = {
   FILL_INPUT: FillInputExecutor,
   CLICK_ELEMENT: ClickElementExecutor,
   WAIT_FOR_ELEMENT: WaitForElementExecutor,
-  DELAY: DelayExecutor
+  DELAY: DelayExecutor,
+  DELIVERY_VIA_WEBHOOK: DeliveryViaWebhookExecutor
 }
