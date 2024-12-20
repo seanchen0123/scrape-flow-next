@@ -15,8 +15,11 @@ import { cn } from '@/lib/utils'
 import { WorkflowStatus } from '@/types/workflow'
 import { Workflow } from '@prisma/client'
 import {
+  CoinsIcon,
+  CornerDownRightIcon,
   FileTextIcon,
   MoreVerticalIcon,
+  MoveRightIcon,
   PlayIcon,
   ShuffleIcon,
   TrashIcon
@@ -25,6 +28,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import DeleteWorkflowDialog from './DeleteWorkflowDialog'
 import RunBtn from './RunBtn'
+import SchedulerDialog from './SchedulerDialog'
+import { Badge } from '@/components/ui/badge'
 
 const statusColors = {
   [WorkflowStatus.DRAFT]: 'bg-yellow-400 text-yellow-600',
@@ -48,34 +53,27 @@ const WorkflowCard = ({ workflow }: Props) => {
               statusColors[workflow.status as WorkflowStatus]
             )}
           >
-            {isDraft ? (
-              <FileTextIcon className="w-5 h-5" />
-            ) : (
-              <PlayIcon className="w-5 h-5 text-white" />
-            )}
+            {isDraft ? <FileTextIcon className="w-5 h-5" /> : <PlayIcon className="w-5 h-5 text-white" />}
           </div>
-          <div className=" text-base font-bold text-muted-foreground flex items-center">
-            <Link
-              href={`/workflow/editor/${workflow.id}`}
-              className="flex items-center hover:underline"
-            >
-              {workflow.name}
-            </Link>
-            {isDraft && (
-              <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                Draft
-              </span>
-            )}
+          <div>
+            <h3 className=" text-base font-bold text-muted-foreground flex items-center">
+              <Link href={`/workflow/editor/${workflow.id}`} className="flex items-center hover:underline">
+                {workflow.name}
+              </Link>
+              {isDraft && (
+                <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
+                  Draft
+                </span>
+              )}
+            </h3>
+            <ScheduleSection workflowId={workflow.id} isDraft={isDraft} creditsCost={workflow.creditsCost} cron={workflow.cron} />
           </div>
         </div>
         <div className="flex items-center space-x-2">
           {!isDraft && <RunBtn workflowId={workflow.id} />}
           <Link
             href={`/workflow/editor/${workflow.id}`}
-            className={cn(
-              buttonVariants({ variant: 'outline', size: 'sm' }),
-              'flex items-center gap-2'
-            )}
+            className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'flex items-center gap-2')}
           >
             <ShuffleIcon size={16} />
             Edit
@@ -87,7 +85,7 @@ const WorkflowCard = ({ workflow }: Props) => {
   )
 }
 
-function WorkflowActions({workflowName, workflowId}: {workflowName: string, workflowId: string}) {
+function WorkflowActions({ workflowName, workflowId }: { workflowName: string; workflowId: string }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   return (
@@ -123,6 +121,36 @@ function WorkflowActions({workflowName, workflowId}: {workflowName: string, work
         workflowId={workflowId}
       />
     </>
+  )
+}
+
+function ScheduleSection({
+  workflowId,
+  isDraft,
+  creditsCost,
+  cron
+}: {
+  workflowId: string
+  isDraft: boolean
+  creditsCost: number
+  cron: string | null
+}) {
+  if (isDraft) return null
+
+  return (
+    <div className="flex items-center gap-2">
+      <CornerDownRightIcon className="w-4 h4 text-muted-foreground" />
+      <SchedulerDialog workflowId={workflowId} cronStr={cron} />
+      <MoveRightIcon className="w-4 h4 text-muted-foreground" />
+      <TooltipWrapper content="Credit consumption for full run">
+        <div className="flex items-center gap-3">
+          <Badge variant={'outline'} className="space-x-2 text-muted-foreground rounded-sm">
+            <CoinsIcon className="w-4 h-4" />
+            <span className="text-sm">{creditsCost}</span>
+          </Badge>
+        </div>
+      </TooltipWrapper>
+    </div>
   )
 }
 
