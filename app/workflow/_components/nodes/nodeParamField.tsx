@@ -7,6 +7,7 @@ import { useCallback } from 'react'
 import { useNodeComponentContext } from '../../context/NodeComponentProvider'
 import BrowserInstanceParam from './param/browserInstanceParam'
 import SelectParam from './param/selectParam'
+import CredentialsParam from './param/credentialsParam'
 
 const NodeParamField = ({ param, disabled }: { param: TaskParam; disabled: boolean }) => {
   const { nodeId } = useNodeComponentContext()
@@ -33,6 +34,8 @@ const NodeParamField = ({ param, disabled }: { param: TaskParam; disabled: boole
       return <StringParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
     case TaskParamType.SELECT:
       return <SelectParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
+    case TaskParamType.CENDENTIAL:
+      return <CredentialsParam param={param} value={value} updateNodeParamValue={updateNodeParamValue} disabled={disabled} />
     default:
       return (
         <div className="w-full">

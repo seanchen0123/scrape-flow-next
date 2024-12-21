@@ -43,6 +43,8 @@ const CreateCredentialDialog = ({ triggerText }: Props) => {
   const onSubmit = useCallback((values: createCredentialSchemaType) => {
     toast.loading('Creating credential...', { id: 'create-credential' })
     mutate(values)
+    form.reset()
+    setOpen(false)
   }, [])
 
   return (

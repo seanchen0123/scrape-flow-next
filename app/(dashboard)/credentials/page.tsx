@@ -2,9 +2,11 @@ import { getCredentialsForUser } from '@/actions/credentials/getCredentialsForUs
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ShieldIcon } from 'lucide-react'
+import { LockKeyholeIcon, ShieldIcon } from 'lucide-react'
 import React, { Suspense } from 'react'
 import CreateCredentialDialog from './_components/CreateCredentialDialog'
+import { formatDistanceToNow } from 'date-fns'
+import DeleteCredentialDialog from './_components/DeleteCredentialDialog'
 
 const CredentialsPage = () => {
   return (
@@ -21,7 +23,10 @@ const CredentialsPage = () => {
         <Alert>
           <ShieldIcon className="w-4 h-4 stroke-primary" />
           <AlertTitle className="text-primary">Encryption</AlertTitle>
-          <AlertDescription>All information is securely encrypted, ensuring your data remains safe</AlertDescription>
+          <AlertDescription>
+            All information is securely encrypted, ensuring your data remains
+            safe
+          </AlertDescription>
         </Alert>
 
         <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
@@ -50,13 +55,37 @@ async function UserCredentials() {
           </div>
           <div className="flex flex-col gap-1 text-center">
             <p className="text-bold">No credentials created yet</p>
-            <p className="text-sm text-muted-foreground">Click the button below to create your first credential</p>
+            <p className="text-sm text-muted-foreground">
+              Click the button below to create your first credential
+            </p>
           </div>
-          <CreateCredentialDialog triggerText='Create your first credential' />
+          <CreateCredentialDialog triggerText="Create your first credential" />
         </div>
       </Card>
     )
   }
 
-  return <div>User creds</div>
+  return (
+    <div className="flex gap-2 flex-wrap">
+      {credentials.map(credential => {
+        const createdAt = formatDistanceToNow(credential.createdAt, {
+          addSuffix: true
+        })
+        return (
+          <Card key={credential.id} className='w-full p-4 flex justify-between'>
+            <div className='flex gap-2 items-center'>
+              <div className='rounded-full bg-primary/10 w-8 h-8 flex items-center justify-center'>
+                <LockKeyholeIcon size={18} className="text-primary" />
+              </div>
+              <div>
+                <p className="font-bold">{credential.name}</p>
+                <p className="text-xs text-muted-foreground">{createdAt}</p>
+              </div>
+            </div>
+            <DeleteCredentialDialog name={credential.name} />
+          </Card>
+        )
+      })}
+    </div>
+  )
 }
