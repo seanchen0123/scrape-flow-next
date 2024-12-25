@@ -3,15 +3,15 @@
 import { cn } from '@/lib/utils'
 import { useReactFlow } from '@xyflow/react'
 import React, { ReactNode } from 'react'
-import { useNodeComponentContext } from '../../context/NodeComponentProvider'
 import { useFlowValidationContext } from '@/hooks/use-flow-validation-context'
 
 type Props = {
-  children: ReactNode
+  children: ReactNode,
+  nodeId: string,
+  isSelected: boolean
 }
 
-const NodeCard = ({ children }: Props) => {
-  const { nodeId, isSelected } = useNodeComponentContext()
+const NodeCard = ({ children, nodeId, isSelected }: Props) => {
   const { invalidInputs } = useFlowValidationContext()
   const { getNode, setCenter } = useReactFlow()
 

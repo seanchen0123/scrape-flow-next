@@ -28,7 +28,7 @@ export enum WorkflowExecutionStatus {
   PENDING = 'PENDING',
   RUNNING = 'RUNNING',
   COMPLETED = 'COMPLETED',
-  FAILD = 'FAILED'
+  FAILED = 'FAILED'
 }
 
 export enum WorkflowExecutionTrigger {

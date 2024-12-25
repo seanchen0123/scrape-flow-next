@@ -19,7 +19,7 @@ export async function getStatsCardsValue(period: Period) {
         lte: dateRange.endDate
       },
       status: {
-        in: [WorkflowExecutionStatus.COMPLETED, WorkflowExecutionStatus.FAILD]
+        in: [WorkflowExecutionStatus.COMPLETED, WorkflowExecutionStatus.FAILED]
       }
     },
     select: {

@@ -1,3 +1,5 @@
+'use client'
+
 import { FlowValidationContext } from "@/app/workflow/context/FlowValidationProviders"
 import { useContext } from "react"
 

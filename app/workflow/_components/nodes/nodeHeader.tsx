@@ -6,17 +6,16 @@ import { TaskRegistry } from '@/lib/workflow/task/registry'
 import { TaskType } from '@/types/task'
 import { useReactFlow } from '@xyflow/react'
 import { CoinsIcon, CopyIcon, GripVerticalIcon, TrashIcon } from 'lucide-react'
-import { useNodeComponentContext } from '../../context/NodeComponentProvider'
 import { AppNode } from '@/types/appNode'
 import { createFlowNode } from '@/lib/workflow/createFlowNode'
 
 type Props = {
-  taskType: TaskType
+  taskType: TaskType,
+  nodeId: string
 }
 
-const NodeHeader = ({ taskType }: Props) => {
+const NodeHeader = ({ taskType, nodeId }: Props) => {
   const task = TaskRegistry[taskType]
-  const { nodeId } = useNodeComponentContext()
   const { deleteElements, getNode, addNodes } = useReactFlow()
 
   const deleteNode = () => {

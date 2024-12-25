@@ -4,13 +4,11 @@ import StringParam from './param/stringParam'
 import { useReactFlow } from '@xyflow/react'
 import { AppNode } from '@/types/appNode'
 import { useCallback } from 'react'
-import { useNodeComponentContext } from '../../context/NodeComponentProvider'
 import BrowserInstanceParam from './param/browserInstanceParam'
 import SelectParam from './param/selectParam'
 import CredentialsParam from './param/credentialsParam'
 
-const NodeParamField = ({ param, disabled }: { param: TaskParam; disabled: boolean }) => {
-  const { nodeId } = useNodeComponentContext()
+const NodeParamField = ({ param, disabled, nodeId }: { param: TaskParam; disabled: boolean, nodeId: string }) => {
   const { updateNodeData, getNode } = useReactFlow()
   const node = getNode(nodeId) as AppNode
   const value = node.data.inputs?.[param.name] || ''

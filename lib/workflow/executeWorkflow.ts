@@ -106,7 +106,7 @@ async function finalizeWorkflowExecution(
   executionFaild: boolean,
   creditsConsumed: number
 ) {
-  const finalStatus = executionFaild ? WorkflowExecutionStatus.FAILD : WorkflowExecutionStatus.COMPLETED
+  const finalStatus = executionFaild ? WorkflowExecutionStatus.FAILED : WorkflowExecutionStatus.COMPLETED
 
   await prisma.workflowExecution.update({
     where: {
