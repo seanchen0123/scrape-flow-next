@@ -31,4 +31,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - NEXT_PUBLIC_APP_URL=http://localhost:3000
 - API_SECRET
 - ENCRYPTION_KEY
+- NEXT_PUBLIC_STRIPE_PUBLSHABLE_KEY
+- STRIPE_SECRET_KEY
+- STRIPE_SMALL_PACK_PRICE_ID
+- STRIPE_MEDIUM_PACK_PRICE_ID
+- STRIPE_LARGE_PACK_PRICE_ID
 ```
