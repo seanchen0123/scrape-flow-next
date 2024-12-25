@@ -26,6 +26,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - CLERK_SECRET_KEY
 - NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 - NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+- NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/setup
 - NEXT_PUBLIC_DEV_MODE=false
 - NEXT_PUBLIC_APP_URL=http://localhost:3000
 - API_SECRET
