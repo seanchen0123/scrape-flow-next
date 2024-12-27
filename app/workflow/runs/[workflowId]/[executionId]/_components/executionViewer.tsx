@@ -20,7 +20,6 @@ import {
   CalendarIcon,
   CircleDashedIcon,
   ClockIcon,
-  CoinsIcon,
   Loader2Icon,
   LucideIcon,
   WorkflowIcon
@@ -64,8 +63,6 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
 
   const duration = datesToDurationString(query.data?.startedAt, query.data?.completedAt)
 
-  const creditsConsumed = getPhasesTotalCost(query.data?.phases || [])
-
   return (
     <div className="flex w-full h-full">
       <aside className="w-[440px] max-w-[440px] border-r-2 border-separate flex flex-grow flex-col overflow-hidden">
@@ -98,12 +95,6 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
             label="Duration"
             icon={ClockIcon}
             value={duration ? duration : <Loader2Icon className="animate-spin" size={20} />}
-          />
-          {/* credits consumed label */}
-          <ExecutionLabel
-            label="Credits consumed"
-            icon={CoinsIcon}
-            value={<ReactCountupWrapper value={creditsConsumed} />}
           />
         </div>
         <Separator />
@@ -151,13 +142,6 @@ const ExecutionViewer = ({ initialData }: { initialData: ExecutionData }) => {
         {!isRunning && selectedPhase && phaseDetails.data && (
           <div className="flex flex-col p-4 container gap-4 overflow-auto">
             <div className="flex gap-2 items-center">
-              <Badge variant={'outline'} className="space-x-4">
-                <div className="flex gap-1 items-center">
-                  <CoinsIcon size={18} className="stroke-muted-foreground" />
-                  <span>Credits</span>
-                </div>
-                <span>{phaseDetails.data.creditsConsumed}</span>
-              </Badge>
               <Badge variant={'outline'} className="space-x-4">
                 <div className="flex gap-1 items-center">
                   <ClockIcon size={18} className="stroke-muted-foreground" />

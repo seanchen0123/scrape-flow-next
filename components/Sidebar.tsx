@@ -1,13 +1,12 @@
 'use client'
 
-import { CoinsIcon, HomeIcon, Layers2Icon, MenuIcon, ShieldCheckIcon } from 'lucide-react'
+import { HomeIcon, Layers2Icon, MenuIcon, ShieldCheckIcon } from 'lucide-react'
 import React, { useState } from 'react'
 import Logo from './Logo'
 import Link from 'next/link'
 import { Button, buttonVariants } from './ui/button'
 import { usePathname } from 'next/navigation'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet'
-import UserAvalibleCredits from './UserAvalibleCredits'
 
 const routes = [
   {
@@ -24,11 +23,6 @@ const routes = [
     href: 'credentials',
     label: 'Credentials',
     icon: ShieldCheckIcon
-  },
-  {
-    href: 'billing',
-    label: 'Billing',
-    icon: CoinsIcon
   }
 ]
 
@@ -41,8 +35,7 @@ const DesktopSidebar = () => {
       <div className="flex items-center justify-center gap-2 border-b-[1px] border-separate p-4">
         <Logo />
       </div>
-      <div className="p-2">
-        <UserAvalibleCredits />
+      <div className="p-1">
       </div>
       <div className="flex flex-col p-2">
         {routes.map(route => (
@@ -83,7 +76,6 @@ export function MobileSidebar() {
               <SheetDescription />
             </SheetHeader>
             <Logo />
-            <UserAvalibleCredits />
             <div className="flex flex-col gap-1">
               {routes.map(route => (
                 <Link

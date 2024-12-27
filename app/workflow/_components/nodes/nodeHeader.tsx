@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { TaskRegistry } from '@/lib/workflow/task/registry'
 import { TaskType } from '@/types/task'
 import { useReactFlow } from '@xyflow/react'
-import { CoinsIcon, CopyIcon, GripVerticalIcon, TrashIcon } from 'lucide-react'
+import { CopyIcon, GripVerticalIcon, TrashIcon } from 'lucide-react'
 import { AppNode } from '@/types/appNode'
 import { createFlowNode } from '@/lib/workflow/createFlowNode'
 
@@ -40,10 +40,6 @@ const NodeHeader = ({ taskType, nodeId }: Props) => {
         <p className="text-xs font-bold uppercase text-muted-foreground">{task.label}</p>
         <div className="flex gap-1 items-center">
           {task.isEntryPoint && <Badge>Entry point</Badge>}
-          <Badge className="gap-2 flex items-center text-xs">
-            <CoinsIcon size={16} />
-            { task.credits }
-          </Badge>
           {!task.isEntryPoint && (
             <>
               <Button

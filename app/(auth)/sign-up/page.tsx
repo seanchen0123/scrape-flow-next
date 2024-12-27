@@ -5,7 +5,7 @@ import RegisterForm from './_components/registerForm'
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="shadow-md rounded-lg flex overflow-hidden bg-white dark:bg-zinc-900">
+      <div className="shadow-md rounded-lg flex overflow-hidden bg-slate-50 dark:bg-zinc-900">
         {/* Left section */}
         <div className="p-8 w-80 sm:w-96">
           <RegisterForm />

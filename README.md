@@ -22,12 +22,6 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Enviroment Variables
 ```
-- NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-- CLERK_SECRET_KEY
-- NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-- NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-- NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/setup
-- NEXT_PUBLIC_DEV_MODE=false
 - NEXT_PUBLIC_APP_URL=http://localhost:3000
 - API_SECRET
 - ENCRYPTION_KEY
@@ -36,4 +30,5 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - STRIPE_SMALL_PACK_PRICE_ID
 - STRIPE_MEDIUM_PACK_PRICE_ID
 - STRIPE_LARGE_PACK_PRICE_ID
+- NEXTAUTH_SECRET
 ```

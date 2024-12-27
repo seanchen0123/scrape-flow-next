@@ -22,7 +22,7 @@ export async function setupUser() {
     await prisma.userBalance.create({
       data: {
         userId,
-        credits: 100
+        credits: 1000000
       }
     })
   }

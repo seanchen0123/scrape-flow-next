@@ -2,7 +2,6 @@
 
 import prisma from '@/lib/prisma'
 import { flowToExecutionPlan } from '@/lib/workflow/executionPlan'
-import { calculateWorkflowCreditsCost } from '@/lib/workflow/helpers'
 import { WorkflowStatus } from '@/types/workflow'
 import { auth } from '@/lib/nextAuth'
 import { revalidatePath } from 'next/cache'
@@ -40,8 +39,6 @@ export async function publishWorkflow({ id, flowDefinition }: { id: string; flow
     throw new Error('No execution plan generated')
   }
 
-  const creditsCost = calculateWorkflowCreditsCost(flow.nodes)
-
   await prisma.workflow.update({
     where: {
       id,
@@ -50,7 +47,6 @@ export async function publishWorkflow({ id, flowDefinition }: { id: string; flow
     data: {
       definition: flowDefinition,
       executionPlan: JSON.stringify(result.executionPlan),
-      creditsCost,
       status: WorkflowStatus.PUBLISHED
     }
   })

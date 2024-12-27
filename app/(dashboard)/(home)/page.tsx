@@ -4,13 +4,10 @@ import PeriodSelector from './_components/periodSelector'
 import { Period } from '@/types/analytics'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getStatsCardsValue } from '@/actions/analytics/getStatsCardsValue'
-import { CirclePlayIcon, CoinsIcon, WaypointsIcon } from 'lucide-react'
+import { CirclePlayIcon, WaypointsIcon } from 'lucide-react'
 import StatsCard from './_components/statsCard'
-import { waitFor } from '@/lib/helper/waitFor'
 import { getWorkflowExecutionStats } from '@/actions/analytics/getWorkflowExecutionStats'
 import ExecutionStatusChart from './_components/executionStatusChart'
-import { getCreditsUsageInPeriod } from '@/actions/analytics/getCreditsUsageInPeriod'
-import CreditsUsageChart from '../billing/_components/creditsUsageChart'
 
 const HomePage = ({ searchParams }: { searchParams: { month?: string; year?: string } }) => {
   const currentDate = new Date()
@@ -35,9 +32,6 @@ const HomePage = ({ searchParams }: { searchParams: { month?: string; year?: str
         <Suspense fallback={<Skeleton className="w-full h-[300px]" />}>
           <StatsExecutionStatus selectedPeriod={period} />
         </Suspense>
-        <Suspense fallback={<Skeleton className="w-full h-[300px]" />}>
-          <CreditsUsageInPeriod selectedPeriod={period} />
-        </Suspense>
       </div>
     </div>
   )
@@ -52,10 +46,9 @@ async function StatsCards({ selectedPeriod }: { selectedPeriod: Period }) {
   const data = await getStatsCardsValue(selectedPeriod)
 
   return (
-    <div className="grid gap-3 lg:gap-8 lg:grid-cols-3 min-h-[120px]">
+    <div className="grid gap-3 lg:gap-8 lg:grid-cols-2 min-h-[120px]">
       <StatsCard title="Workflow executions" value={data.workflowExecutions} icon={CirclePlayIcon} />
       <StatsCard title="Phase executions" value={data.phaseExecutions} icon={WaypointsIcon} />
-      <StatsCard title="Credits consumed" value={data.creditsConsumed} icon={CoinsIcon} />
     </div>
   )
 }
@@ -73,13 +66,6 @@ function StatsCardSkeleton() {
 async function StatsExecutionStatus({ selectedPeriod }: { selectedPeriod: Period }) {
   const data = await getWorkflowExecutionStats(selectedPeriod)
   return <ExecutionStatusChart data={data} />
-}
-
-async function CreditsUsageInPeriod({ selectedPeriod }: { selectedPeriod: Period }) {
-  const data = await getCreditsUsageInPeriod(selectedPeriod)
-  return (
-    <CreditsUsageChart data={data} title="Daily credits spent" description="Daily credit consumed in selected period" />
-  )
 }
 
 export default HomePage

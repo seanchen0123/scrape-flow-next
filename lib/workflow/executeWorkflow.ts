@@ -42,7 +42,6 @@ export async function executeWorkflow(executionId: string, nextRunAt?: Date) {
   await initializePhasesStatus(execution)
 
   // 4. execute
-  let creditsConsumed = 0
   let executionFaild = false
   for (const phase of execution.phases) {
     // 4.1 execute every phase
@@ -51,11 +50,10 @@ export async function executeWorkflow(executionId: string, nextRunAt?: Date) {
       executionFaild = true
       break
     }
-    creditsConsumed += phaseExecution.creditsConsumed
   }
 
   // 5. finalize execution
-  await finalizeWorkflowExecution(executionId, execution.workflowId, executionFaild, creditsConsumed)
+  await finalizeWorkflowExecution(executionId, execution.workflowId, executionFaild)
 
   // 6. cleanup environment
   await cleanupEnvironment(environment)
@@ -103,8 +101,7 @@ async function initializePhasesStatus(execution: any) {
 async function finalizeWorkflowExecution(
   executionId: string,
   workflowId: string,
-  executionFaild: boolean,
-  creditsConsumed: number
+  executionFaild: boolean
 ) {
   const finalStatus = executionFaild ? WorkflowExecutionStatus.FAILED : WorkflowExecutionStatus.COMPLETED
 
@@ -114,8 +111,7 @@ async function finalizeWorkflowExecution(
     },
     data: {
       status: finalStatus,
-      completedAt: new Date(),
-      creditsConsumed
+      completedAt: new Date()
     }
   })
 
@@ -150,24 +146,18 @@ async function executeWorkflowPhase(phase: ExecutionPhase, environment: Environm
       inputs: JSON.stringify(environment.phases[node.id].inputs)
     }
   })
-
-  const creditsRequired = TaskRegistry[node.data.type].credits
   
-  let success = await decrementCredits(userId, creditsRequired, logCollector)
-  const creditsConsumed = success ? creditsRequired : 0
-  if (success) {
-    // we can execute the phase if the credits are sufficient
-    success = await executePhase(phase, node, environment, logCollector)
-  }
+  let success = false
+  success = await executePhase(phase, node, environment, logCollector)
 
   const outputs = environment.phases[node.id].outputs
 
-  await finalizePhase(phase.id, success, outputs, logCollector, creditsConsumed)
+  await finalizePhase(phase.id, success, outputs, logCollector)
 
-  return { success, creditsConsumed }
+  return { success }
 }
 
-async function finalizePhase(phaseId: string, success: boolean, outputs: any, logCollector: LogCollector, creditsConsumed: number) {
+async function finalizePhase(phaseId: string, success: boolean, outputs: any, logCollector: LogCollector) {
   const finalStatus = success ? ExecutionPhaseStatus.COMPLETED : ExecutionPhaseStatus.FAILED
 
   await prisma.executionPhase.update({
@@ -178,7 +168,6 @@ async function finalizePhase(phaseId: string, success: boolean, outputs: any, lo
       status: finalStatus,
       completedAt: new Date(),
       outputs: JSON.stringify(outputs),
-      creditsConsumed,
       logs: {
         createMany: {
           data: logCollector.getAll().map(log => ({

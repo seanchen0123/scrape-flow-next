@@ -7,7 +7,6 @@ import { WorkflowExecution } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import ExecutionStatusIndicator from './executionStatusIndicator'
 import { WorkflowExecutionStatus } from '@/types/workflow'
-import { CoinsIcon } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { useRouter } from 'next/navigation'
 
@@ -30,7 +29,6 @@ const ExecutionsTable = ({ workflowId, initialData }: { workflowId: string; init
           <TableRow>
             <TableHead>Id</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Consumed</TableHead>
             <TableHead className="text-right text-xs text-muted-foreground">Started at (desc)</TableHead>
           </TableRow>
         </TableHeader>
@@ -64,15 +62,6 @@ const ExecutionsTable = ({ workflowId, initialData }: { workflowId: string; init
                       <span className="font-semibold capitalize">{execution.status}</span>
                     </div>
                     <div className="text-muted-foreground text-xs mx-5">{duration}</div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-col">
-                    <div className="flex items-center gap-2">
-                      <CoinsIcon size={16} className="text-primary" />
-                      <span className="font-semibold capitalize">{execution.creditsConsumed}</span>
-                    </div>
-                    <div className="text-muted-foreground text-xs mx-5">Credits</div>
                   </div>
                 </TableCell>
                 <TableCell className="text-right text-muted-foreground">{formattedStartedAt}</TableCell>

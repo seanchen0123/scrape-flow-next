@@ -17,11 +17,9 @@ import { Workflow } from '@prisma/client'
 import {
   ChevronRight,
   ClockIcon,
-  CoinsIcon,
   CornerDownRightIcon,
   FileTextIcon,
   MoreVerticalIcon,
-  MoveRightIcon,
   PlayIcon,
   ShuffleIcon,
   TrashIcon
@@ -31,7 +29,6 @@ import { useState } from 'react'
 import DeleteWorkflowDialog from './DeleteWorkflowDialog'
 import RunBtn from './RunBtn'
 import SchedulerDialog from './SchedulerDialog'
-import { Badge } from '@/components/ui/badge'
 import ExecutionStatusIndicator, {
   ExecutionStatusLabel
 } from '@/app/workflow/runs/[workflowId]/_components/executionStatusIndicator'
@@ -80,7 +77,6 @@ const WorkflowCard = ({ workflow }: Props) => {
             <ScheduleSection
               workflowId={workflow.id}
               isDraft={isDraft}
-              creditsCost={workflow.creditsCost}
               cron={workflow.cron}
             />
           </div>
@@ -144,12 +140,10 @@ function WorkflowActions({ workflowName, workflowId }: { workflowName: string; w
 function ScheduleSection({
   workflowId,
   isDraft,
-  creditsCost,
   cron
 }: {
   workflowId: string
   isDraft: boolean
-  creditsCost: number
   cron: string | null
 }) {
   if (isDraft) return null
@@ -158,15 +152,6 @@ function ScheduleSection({
     <div className="flex items-center gap-2">
       <CornerDownRightIcon className="w-4 h4 text-muted-foreground" />
       <SchedulerDialog workflowId={workflowId} cronStr={cron} key={`${cron}-${workflowId}`} />
-      <MoveRightIcon className="w-4 h4 text-muted-foreground" />
-      <TooltipWrapper content="Credit consumption for full run">
-        <div className="flex items-center gap-3">
-          <Badge variant={'outline'} className="space-x-2 text-muted-foreground rounded-sm">
-            <CoinsIcon className="w-4 h-4" />
-            <span className="text-sm">{creditsCost}</span>
-          </Badge>
-        </div>
-      </TooltipWrapper>
     </div>
   )
 }
