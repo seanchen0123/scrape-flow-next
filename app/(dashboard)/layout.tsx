@@ -2,7 +2,7 @@ import BreadcrumbHeader from '@/components/BreadcrumbHeader'
 import DesktopSidebar from '@/components/Sidebar'
 import { ThemeModeToggle } from '@/components/ThemeModeToggle'
 import { Separator } from '@/components/ui/separator'
-import { SignedIn, UserButton } from '@clerk/nextjs'
+import UserButton from '@/components/UserButton'
 import React, { ReactNode } from 'react'
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
@@ -14,9 +14,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
           <BreadcrumbHeader />
           <div className='gap-2 flex items-center'>
             <ThemeModeToggle />
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+            <UserButton />
           </div>
         </header>
         <Separator />

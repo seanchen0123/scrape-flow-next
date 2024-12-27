@@ -3,7 +3,7 @@
 import { sysmmetricEncrypt } from '@/lib/encryption'
 import prisma from '@/lib/prisma'
 import { createCredentialSchema, createCredentialSchemaType } from '@/schema/credential'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
 import { revalidatePath } from 'next/cache'
 
 export async function createCredential(form: createCredentialSchemaType) {
@@ -13,10 +13,11 @@ export async function createCredential(form: createCredentialSchemaType) {
     throw new Error('Invalid form data')
   }
 
-  const { userId } = auth()
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId} = session.user
 
   // Encrypt the value
   const encryptedValue = sysmmetricEncrypt(data.value)

@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
 import React from 'react'
 import Editor from '../../_components/editor'
 
@@ -11,9 +11,11 @@ type Props = {
 
 const WorkflowPage = async ({ params }: Props) => {
   const { workflowId } = params
-  const { userId } = auth()
+  const session = await auth()
 
-  if (!userId) return <div>unauthenticatred</div>
+  if (!session?.user.id) return <div>unauthenticatred</div>
+
+  const { id: userId } = session.user
 
   const workflow = await prisma.workflow.findUnique({
     where: {

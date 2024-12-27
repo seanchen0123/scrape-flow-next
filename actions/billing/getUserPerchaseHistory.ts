@@ -1,11 +1,13 @@
 import prisma from '@/lib/prisma'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
+import { redirect } from 'next/navigation'
 
 export async function getUserPerchaseHistory() {
-  const { userId } = auth()
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId} = session.user
 
   return prisma.userPurchase.findMany({
     where: { userId },

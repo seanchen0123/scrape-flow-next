@@ -6,8 +6,7 @@ export async function LaunchBrowserExecutor(environment: ExecutionEnvironment<ty
   try {
     const websiteUrl = environment.getInput('Website Url')
     const browser = await pupppeteer.launch({
-      headless: false,
-      executablePath: 'C:\\Users\\tt\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe',
+      headless: false
     })
     environment.log.info('Browser started successfully')
     environment.setBrowser(browser)

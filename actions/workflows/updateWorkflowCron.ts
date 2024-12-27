@@ -2,15 +2,15 @@
 
 import parser from 'cron-parser'
 import prisma from '@/lib/prisma'
-import { auth } from '@clerk/nextjs/server'
-import { revalidatePath } from 'next/cache';
+import { auth } from '@/lib/nextAuth'
+import { revalidatePath } from 'next/cache'
 
 export async function updateWorkflowCron({ id, cron }: { id: string; cron: string }) {
-  const { userId } = auth()
-
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId } = session.user
 
   try {
     const interval = parser.parseExpression(cron, { utc: true })

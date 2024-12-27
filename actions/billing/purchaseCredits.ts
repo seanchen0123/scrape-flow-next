@@ -3,14 +3,15 @@
 import { getAppUrl } from '@/lib/helper/appUrl'
 import { stripe } from '@/lib/stripe/stripe'
 import { getCreditsPack, PackId } from '@/types/billing'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
 import { redirect } from 'next/navigation'
 
 export async function purchaseCredits(packId: PackId) {
-  const { userId } = auth()
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId} = session.user
 
   const selectedPack = getCreditsPack(packId)
 
@@ -19,7 +20,7 @@ export async function purchaseCredits(packId: PackId) {
   }
 
   const priceId = selectedPack.priceId
-  const session = await stripe.checkout.sessions.create({
+  const stripeSession = await stripe.checkout.sessions.create({
     mode: 'payment',
     invoice_creation: {
       enabled: true
@@ -33,9 +34,9 @@ export async function purchaseCredits(packId: PackId) {
     line_items: [{ quantity: 1, price: priceId }]
   })
 
-  if (!session.url) {
+  if (!stripeSession.url) {
     throw new Error('Failed to create stripe session')
   }
 
-  redirect(session.url)
+  redirect(stripeSession.url)
 }
