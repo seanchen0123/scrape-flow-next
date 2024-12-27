@@ -1,14 +1,15 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
 import { redirect } from 'next/navigation'
 
 export async function setupUser() {
-  const { userId } = auth()
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId} = session.user
 
   const balance = await prisma.userBalance.findUnique({
     where: {

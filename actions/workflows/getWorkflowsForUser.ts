@@ -1,13 +1,14 @@
 'use server'
 
+import { auth } from "@/lib/nextAuth"
 import prisma from "@/lib/prisma"
-import { auth } from "@clerk/nextjs/server"
 
 export async function getWorkflowsForUser() {
-  const { userId } = auth()
-  if (!userId) {
-    throw new Error('User not authenticated')
-  }
+    const session = await auth()
+    if (!session?.user) {
+      throw new Error('User not authenticated')
+    }
+    const { id: userId } = session.user
 
   return prisma.workflow.findMany({
     where: {

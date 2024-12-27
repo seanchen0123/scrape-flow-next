@@ -6,7 +6,7 @@ import { createWorkflowSchema, createWorkflowSchemaType } from '@/schema/workflo
 import { AppNode } from '@/types/appNode'
 import { TaskType } from '@/types/task'
 import { WorkflowStatus } from '@/types/workflow'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
 import { Edge } from '@xyflow/react'
 import { redirect } from 'next/navigation'
 
@@ -16,11 +16,11 @@ export async function createWorkflow(form: createWorkflowSchemaType) {
     throw new Error('Invalid form data')
   }
 
-  const { userId } = auth()
-
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId} = session.user
 
   const initialFLow: {nodes: AppNode[], edges: Edge[]} = {
     nodes: [],

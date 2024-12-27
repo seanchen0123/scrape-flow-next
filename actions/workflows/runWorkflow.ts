@@ -11,14 +11,15 @@ import {
   WorkflowExecutionTrigger,
   WorkflowStatus
 } from '@/types/workflow'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@/lib/nextAuth'
 import { redirect } from 'next/navigation'
 
 export async function runWorkflow(form: { workflowId: string; flowDefinition?: string }) {
-  const { userId } = auth()
-  if (!userId) {
-    throw new Error('User not authenticated')
-  }
+  const session = await auth()
+    if (!session?.user) {
+      throw new Error('User not authenticated')
+    }
+    const { id: userId } = session.user
 
   const { workflowId, flowDefinition } = form
   if (!workflowId) {

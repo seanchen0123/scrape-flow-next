@@ -1,19 +1,21 @@
 import { periodToDateRange } from '@/lib/helper/dates'
+import { auth } from '@/lib/nextAuth'
 import prisma from '@/lib/prisma'
 import { Period } from '@/types/analytics'
 import { ExecutionPhaseStatus } from '@/types/workflow'
-import { auth } from '@clerk/nextjs/server'
 import { eachDayOfInterval, format } from 'date-fns'
+import { redirect } from 'next/navigation'
 
 type Stats = Record<string, { success: number; failed: number }>
 
 const { COMPLETED, FAILED } = ExecutionPhaseStatus
 
 export async function getCreditsUsageInPeriod(period: Period) {
-  const { userId } = auth()
-  if (!userId) {
+  const session = await auth()
+  if (!session?.user) {
     throw new Error('User not authenticated')
   }
+  const { id: userId} = session.user
 
   const dateRange = periodToDateRange(period)
   const executionPhases = await prisma.workflowExecution.findMany({
