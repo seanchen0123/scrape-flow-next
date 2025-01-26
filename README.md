@@ -32,3 +32,4 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - STRIPE_LARGE_PACK_PRICE_ID
 - NEXTAUTH_SECRET
 ```
+
